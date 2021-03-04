@@ -159,10 +159,10 @@ def draw_bbox_landm(img, ann, img_height, img_width):
 
     face = img[y1:y2, x1:x2]
 
-    face = cv2.GaussianBlur(face, (kernal_width, kernal_height), 0)
+    face = cv2.GaussianBlur(face, (kernal_width, kernal_height), cv2.BORDER_DEFAULT)
 
     img[y1:y2, x1:x2] = face
-    
+
 
     # confidence
     # text = "{:.4f}".format(ann[15])
