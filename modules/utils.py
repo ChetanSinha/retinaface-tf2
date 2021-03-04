@@ -151,25 +151,36 @@ def draw_bbox_landm(img, ann, img_height, img_width):
     # bbox
     x1, y1, x2, y2 = int(ann[0] * img_width), int(ann[1] * img_height), \
                      int(ann[2] * img_width), int(ann[3] * img_height)
-    cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+    # cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+    h, w = img.shape[:2]
+    kernal_width = (w // 7) | 1
+    kernal_height = (h // 7) | 1
+
+    face = img[y1:y2, x1:x2]
+
+    face = cv2.GaussianBlur(face, (kernal_width, kernal_height), 0)
+
+    img[y1:y2, x1:x2] = face
+    
 
     # confidence
-    text = "{:.4f}".format(ann[15])
-    cv2.putText(img, text, (int(ann[0] * img_width), int(ann[1] * img_height)),
-                cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255))
+    # text = "{:.4f}".format(ann[15])
+    # cv2.putText(img, text, (int(ann[0] * img_width), int(ann[1] * img_height)),
+    #             cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255))
 
     # landmark
-    if ann[14] > 0:
-        cv2.circle(img, (int(ann[4] * img_width),
-                         int(ann[5] * img_height)), 1, (255, 255, 0), 2)
-        cv2.circle(img, (int(ann[6] * img_width),
-                         int(ann[7] * img_height)), 1, (0, 255, 255), 2)
-        cv2.circle(img, (int(ann[8] * img_width),
-                         int(ann[9] * img_height)), 1, (255, 0, 0), 2)
-        cv2.circle(img, (int(ann[10] * img_width),
-                         int(ann[11] * img_height)), 1, (0, 100, 255), 2)
-        cv2.circle(img, (int(ann[12] * img_width),
-                         int(ann[13] * img_height)), 1, (255, 0, 100), 2)
+    # if ann[14] > 0:
+    #     cv2.circle(img, (int(ann[4] * img_width),
+    #                      int(ann[5] * img_height)), 1, (255, 255, 0), 2)
+    #     cv2.circle(img, (int(ann[6] * img_width),
+    #                      int(ann[7] * img_height)), 1, (0, 255, 255), 2)
+    #     cv2.circle(img, (int(ann[8] * img_width),
+    #                      int(ann[9] * img_height)), 1, (255, 0, 0), 2)
+    #     cv2.circle(img, (int(ann[10] * img_width),
+    #                      int(ann[11] * img_height)), 1, (0, 100, 255), 2)
+    #     cv2.circle(img, (int(ann[12] * img_width),
+    #                      int(ann[13] * img_height)), 1, (255, 0, 100), 2)
 
 
 def draw_anchor(img, prior, img_height, img_width):
